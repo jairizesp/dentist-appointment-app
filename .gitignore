@@ -1,0 +1,34 @@
+# Node
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+
+# Vite
+.vite/
+.vite-cache/
+*.log
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# IDEs / Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Optional: coverage reports
+coverage/
+*.lcov
+
+# Optional: system files
+*.bak
+*.swp
+*.tmp
