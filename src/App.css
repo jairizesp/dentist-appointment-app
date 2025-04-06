@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+.nav__link {
+  position: relative; /* Ensure the pseudo-element is positioned relative to the link */
+  text-decoration: none;
+}
+
+.nav__link::after {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 0; /* Start with no width */
+  background-color: #9333ea;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: width 0.4s ease; /* Smooth transition effect */
+}
+
+.nav__link:hover::after {
+  width: 100%; /* Expand on hover */
+}

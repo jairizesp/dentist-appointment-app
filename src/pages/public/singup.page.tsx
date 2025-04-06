@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../components/button.component";
 import Input from "../../components/input.component";
 import signupBanner from "../../assets/signup.svg";
+import { useNavigate } from "react-router-dom";
+import { getAccessToken } from "../../utils/helpers/tokenHelper";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
     firstName: "",
     lastName: "",
   });
+
+  useEffect(() => {
+    const accessToken = getAccessToken();
+    if (accessToken) {
+      navigate("/");
+    }
+  }, []);
 
   const [error, setError] = useState("");
 
@@ -22,7 +32,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="w-full h-full flex px-4 flex-col-reverse lg:flex-row">
+    <div className="w-full h-screen flex px-4 flex-col-reverse lg:flex-row">
       <div className="grow-[1.5] h-full flex justify-center items-center">
         <div className="w-full xl:w-3/5 h-full">
           <form className="h-full flex flex-col justify-start mt-6 lg:justify-center gap-2 items-center">
@@ -72,18 +82,18 @@ const Signup = () => {
             <div className="w-full flex justify-end">
               <p className="float-right">
                 Already have an account?
-                <span className="text-blue-500 ml-2">
+                <span className="nav__link text-purple-600 ml-2 font-semibold">
                   <a href="/login">Login</a>
                 </span>
               </p>
             </div>
             <Button className="w-full" variant="primary" onClick={handleSubmit}>
-              Login
+              Signup
             </Button>
           </form>
         </div>
       </div>
-      <div className="grow-1 lg:h-full flex justify-center items-center">
+      <div className="lg:h-full flex justify-center items-center mt-16">
         <img src={signupBanner} alt="" />
       </div>
     </div>
