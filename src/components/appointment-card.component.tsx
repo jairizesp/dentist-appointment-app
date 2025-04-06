@@ -1,4 +1,3 @@
-import React from "react";
 import Button from "./button.component";
 import { AppointmentCardProps } from "../utils/interface/components/appointment-card.interface";
 import { appointmentDuration } from "../utils/helpers/range";

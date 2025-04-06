@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import logo from "../assets/tooth-logo.png";
 import { useLocation } from "react-router-dom";
 

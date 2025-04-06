@@ -37,14 +37,6 @@ const Dashboard = () => {
             {appointments.map((appointment) => (
               <AppointmentCard isUpcoming={true} info={appointment} />
             ))}
-
-            {/* <AppointmentCard isUpcoming={true} info={dummy} />
-            <AppointmentCard isUpcoming={true} info={dummy} /> */}
-            {/* <AppointmentCard />
-            <AppointmentCard />
-            <AppointmentCard />
-            <AppointmentCard />
-            <AppointmentCard /> */}
           </div>
         </section>
 
@@ -52,12 +44,7 @@ const Dashboard = () => {
           <h2 className="text-xl text-purple-800  font-semibold text-left">
             Past Appointments
           </h2>
-          <div className="flex flex-wrap gap-4">
-            {/* <AppointmentCard info={dummy} />
-            <AppointmentCard info={dummy} />
-            <AppointmentCard info={dummy} />
-            <AppointmentCard info={dummy} /> */}
-          </div>
+          <div className="flex flex-wrap gap-4"></div>
         </section>
       </div>
     </div>
