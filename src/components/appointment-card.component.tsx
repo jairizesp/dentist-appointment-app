@@ -92,7 +92,7 @@ const AppointmentCard = (props: AppointmentCardProps) => {
                 navigate(
                   `/bookings/${props.info.dentist_id}/${formatDate(
                     props.info.appointment_date
-                  )}`
+                  )}/${props.info.id}`
                 )
               }
             >

@@ -5,11 +5,16 @@ import { getDentists } from "../../services/dentist.service";
 import {
   addAppointment,
   getAppointmentsByDentist,
+  rescheduleAppointment,
 } from "../../services/appointment.service";
-import { Appointment } from "../../utils/interface/api/appointment.interface";
+import {
+  Appointment,
+  ReschedAppointment,
+} from "../../utils/interface/api/appointment.interface";
 import Button from "../../components/button.component";
 import { getIdentity } from "../../utils/helpers/tokenHelper";
 import { useNavigate, useParams } from "react-router-dom";
+import { Toast, ToastType } from "../../components/toast.component";
 
 const APPOINTMENTS = [
   { from_value: 8, from_label: "8 AM", to_value: 9, to_label: "9 AM" },
@@ -24,11 +29,20 @@ const APPOINTMENTS = [
 ];
 const Booking = () => {
   const navigate = useNavigate();
-  const { id, date } = useParams();
+  const { id, date, sched_id } = useParams();
   const [dentists, setDentists] = useState<DentistInformation[]>([]);
   const [selectedDentist, setSelectedDentist] = useState<number>(
     Number(id) ?? 0
   );
+
+  const [toast, setToast] = useState<{
+    message: string;
+    type: ToastType;
+  } | null>(null);
+
+  const showToast = (type: ToastType, message: string) => {
+    setToast({ message, type });
+  };
 
   const [isReschedule, setIsReschedule] = useState(false);
 
@@ -91,24 +105,62 @@ const Booking = () => {
     setSelectedDentist(selectedId);
   };
 
-  const handleConfirmAppointment = async () => {
+  const handleConfirmReschedAppointment = async () => {
     setIsLoading(true);
-    const userIdentity = getIdentity();
 
-    const payload: Omit<Appointment, "id"> = {
+    const payload: ReschedAppointment = {
+      id: Number(sched_id),
       appointment_date: appointmentDate,
-      dentist_id: selectedDentist,
-      user_id: Number(userIdentity?.id),
       from: selectedAppointment?.from,
       to: selectedAppointment?.to,
     };
 
-    const result = await addAppointment(payload);
+    const result = await rescheduleAppointment(payload);
 
     if (result) {
+      const toastMessage = "Reschedule successful";
+      showToast("success", toastMessage);
       setIsLoading(false);
+
       navigate("/dashboard");
     }
+  };
+
+  const handleConfirmAddAppointment = async () => {
+    try {
+      setIsLoading(true);
+      const userIdentity = getIdentity();
+
+      const payload: Omit<Appointment, "id"> = {
+        appointment_date: appointmentDate,
+        dentist_id: selectedDentist,
+        user_id: Number(userIdentity?.id),
+        from: selectedAppointment?.from,
+        to: selectedAppointment?.to,
+      };
+
+      const result = await addAppointment(payload);
+
+      if (result) {
+        const toastMessage = "Appointment booked";
+        showToast("success", toastMessage);
+        setIsLoading(false);
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      const toastMessage = error.message;
+      showToast("error", toastMessage);
+    }
+  };
+
+  const handleConfirmAppointment = async () => {
+    if (id && date) {
+      handleConfirmReschedAppointment();
+
+      return;
+    }
+
+    handleConfirmAddAppointment();
   };
 
   const isScheduled = (from: number) => {
@@ -188,6 +240,13 @@ const Booking = () => {
           </div>
         </div>
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { getIdentity } from "../utils/helpers/tokenHelper";
 import {
   Appointment,
   AppointmentParams,
+  ReschedAppointment,
 } from "../utils/interface/api/appointment.interface";
 import { AppointmentWithDentist } from "../utils/interface/components/appointment-card.interface";
 import apiClient from "./axios";
@@ -65,5 +66,20 @@ export async function cancelAppointment(id: number) {
     return result;
   } catch (error: any) {
     throw error?.response?.data;
+  }
+}
+
+export async function rescheduleAppointment(payload: ReschedAppointment) {
+  try {
+    const response = await apiClient.put(
+      "/appointment/resched-appointment",
+      payload
+    );
+
+    const result = response.data;
+
+    return result;
+  } catch (error: any) {
+    return error?.response?.data;
   }
 }

@@ -123,7 +123,7 @@ const Calendar = (props: CalendarProps) => {
                          : ""
                      }
                      ${
-                       default_date == dateStr
+                       default_date == dateStr && !appointmentDate
                          ? "bg-purple-800 text-purple-200"
                          : ""
                      }
@@ -181,7 +181,7 @@ const Calendar = (props: CalendarProps) => {
       </header>
 
       <div className="grid grid-cols-7 gap-1 mb-2">
-        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, index) => (
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, index) => (
           <div key={index} className="text-center font-semibold text-gray-700">
             {day}
           </div>
