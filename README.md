@@ -52,3 +52,88 @@ export default tseslint.config({
   },
 })
 ```
+
+​The "Dentist Appointment App" is a web-based application designed to facilitate the scheduling and management of dental appointments. Developed using React, TypeScript, and Vite, this project offers a modern and efficient user interface for both patients and dental practitioners.​
+
+Features
+Appointment Scheduling: Enables patients to book, reschedule, or cancel dental appointments online.​
+Setmore
+
+Patient Management: Allows dental practitioners to maintain and access patient records securely.​
+
+User Authentication: Ensures secure login for both patients and staff.​
+
+Technology Stack
+Frontend: React with TypeScript, utilizing Vite for project bundling and development.​
+
+Backend: Not specified in the repository.​
+
+Deployment: Configured for deployment on Vercel, as indicated by the vercel.json file.​
+
+Project Structure
+src/: Contains the main source code for the application.​
+
+public/: Holds static assets and the main index.html file.​
+
+package.json: Lists project dependencies and scripts.​
+
+vite.config.ts: Configuration file for Vite.​
+
+tsconfig.json: TypeScript configuration file.​
+
+Installation and Setup
+To set up the project locally:
+
+Clone the Repository:
+
+```js
+  git clone https://github.com/jairizesp/dentist-appointment-app.git
+```
+
+Navigate to the Project Directory:
+```js
+  cd dentist-appointment-app
+```
+
+Install Dependencies:
+```js
+  npm install
+```
+
+Start the Development Server:
+```js
+  npm run dev
+```
+The application will be running at http://localhost:3000 by default.
+
+Deployment
+The presence of the vercel.json file suggests that the project is configured for deployment on Vercel. To deploy:​
+
+Install Vercel CLI:
+ ```js
+  npm install -g vercel
+```
+
+Deploy the Application:
+vercel
+Follow the prompts to complete the deployment process.​
+
+Contributing
+Contributions to the project are welcome. To contribute:​
+
+Fork the Repository.
+
+Create a New Branch:
+```js
+  git checkout -b feature-name
+```
+
+Make Your Changes.
+
+Commit and Push:
+ 
+```js
+  git commit -m "Description of changes"
+  git push origin feature-name
+```
+Create a Pull Request.
