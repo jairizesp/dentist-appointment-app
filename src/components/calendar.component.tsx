@@ -20,12 +20,18 @@ const getFirstDayOfMonth = (month: number, year: number) => {
 interface CalendarProps {
   selectedDate: (date: string) => void;
   dentistId?: number;
+  default_date?: string;
 }
 
 // Calendar Component
 const Calendar = (props: CalendarProps) => {
   const today = new Date();
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+
+  const [currentMonth, setCurrentMonth] = useState(
+    props.default_date
+      ? Number(props.default_date.split("-")[1]) - 1
+      : today.getMonth()
+  );
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [toast, setToast] = useState<{
@@ -35,13 +41,14 @@ const Calendar = (props: CalendarProps) => {
 
   const [appointmentDate, setAppointmentDate] = useState("");
 
-  const showToast = (type: ToastType) => {
-    setToast({ message: `Please select a dentist first.`, type });
+  const showToast = (type: ToastType, message: string) => {
+    setToast({ message, type });
   };
 
   const handleAddAppointment = (date: string) => {
     if (!props.dentistId) {
-      showToast("info");
+      const toastMessage = "Please select a dentist first.";
+      showToast("info", toastMessage);
       return;
     }
     props?.selectedDate(date);
@@ -71,6 +78,13 @@ const Calendar = (props: CalendarProps) => {
     const todayMonth = today.getMonth();
     const todayYear = today.getFullYear();
 
+    let default_date = "";
+
+    if (props.default_date) {
+      const [year, month, day] = props.default_date.split("-");
+      default_date = `${year}-${parseInt(month)}-${day}`;
+    }
+
     // Get today's date as a string to compare against
     const todayStr = `${todayYear}-${todayMonth + 1}-${todayDate}`;
 
@@ -87,9 +101,6 @@ const Calendar = (props: CalendarProps) => {
     // Add actual days
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = `${currentYear}-${currentMonth + 1}-${day}`;
-      const dayAppointments = appointments.filter(
-        (app) => app.date === dateStr
-      );
 
       // Check if this is today's date
       let isToday =
@@ -103,6 +114,9 @@ const Calendar = (props: CalendarProps) => {
       // Disable past dates
       const isPastDate = new Date(dateStr) < new Date(todayStr);
 
+      console.log("DEFULT DATE: ", default_date);
+      console.log("DATE STR: ", dateStr);
+      // console.log("DEFAULT DATE: ", props.default_date == dateStr);
       days.push(
         <button
           key={`${currentYear}-${currentMonth + 1}-${day}`}
@@ -112,7 +126,12 @@ const Calendar = (props: CalendarProps) => {
               : "cursor-pointer"
           }
                      ${
-                       isToday && !appointmentDate
+                       isToday && !appointmentDate && !props.default_date
+                         ? "bg-purple-800 text-purple-200"
+                         : ""
+                     }
+                     ${
+                       default_date == dateStr
                          ? "bg-purple-800 text-purple-200"
                          : ""
                      }
@@ -146,7 +165,7 @@ const Calendar = (props: CalendarProps) => {
   };
 
   return (
-    <div className="max-w-xl p-4 font-sans">
+    <div className="w-full lg:max-w-xl p-4 font-sans">
       <header className="flex justify-between items-center mb-4">
         <button
           onClick={handlePreviousMonth}

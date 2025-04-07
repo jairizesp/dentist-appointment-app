@@ -4,6 +4,7 @@ import { InputType } from "../utils/interface/components/input.interface";
 
 const Input: React.FC<InputType> = ({
   label,
+  children,
   error,
   className = "",
   required,
@@ -24,7 +25,7 @@ const Input: React.FC<InputType> = ({
   );
 
   return (
-    <div className="mb-4 w-full">
+    <div className="mb-4 w-full relative">
       {label && (
         <label className="block mb-1 text-sm font-medium">
           {required && <span className="text-red-600">*</span>}
@@ -38,6 +39,7 @@ const Input: React.FC<InputType> = ({
         type={type ?? "text"}
         {...props}
       />
+      {children}
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
   );

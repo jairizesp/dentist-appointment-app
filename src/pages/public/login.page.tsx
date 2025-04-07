@@ -5,9 +5,21 @@ import loginBanner from "../../assets/login.svg";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../../utils/helpers/tokenHelper";
 import { userLogin } from "../../services/auth.service";
+import { RxEyeOpen } from "react-icons/rx";
+import { TbEyeClosed } from "react-icons/tb";
+import { Toast, ToastType } from "../../components/toast.component";
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const [toast, setToast] = useState<{
+    message: string;
+    type: ToastType;
+  } | null>(null);
+
+  const showToast = (type: ToastType, message: string) => {
+    setToast({ message, type });
+  };
 
   useEffect(() => {
     const accessToken = getAccessToken();
@@ -21,6 +33,8 @@ const Login = () => {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [inputType, setInputType] = useState("password");
 
   const [error, setError] = useState("");
 
@@ -30,12 +44,57 @@ const Login = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const res = await userLogin(credentials);
-
-    setIsLoading(false);
-    if (res.access_token) {
-      navigate("/");
+    try {
+      const res = await userLogin(credentials);
+      if (res.access_token) {
+        showToast("success", "Login successful.");
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      }
+    } catch (error: any) {
+      const toastMessage = error.message;
+      showToast("error", toastMessage);
+      console.log("ERROR: ", error);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const handlePasswordVisibility = () => {
+    setIsShowPassword((prev) => {
+      const toggleShow = !prev;
+      if (toggleShow) {
+        setInputType("text");
+      } else {
+        setInputType("password");
+      }
+      return toggleShow;
+    });
+  };
+
+  const renderPasswordToggle = () => {
+    if (isShowPassword) {
+      return (
+        <>
+          <TbEyeClosed
+            size={25}
+            className="cursor-pointer hover:scale-110 active:scale-95 absolute top-8 right-4 z-10"
+            onClick={handlePasswordVisibility}
+          />
+        </>
+      );
+    }
+
+    return (
+      <>
+        <RxEyeOpen
+          size={25}
+          className="cursor-pointer hover:scale-110 active:scale-95 absolute top-8 right-4 z-10"
+          onClick={handlePasswordVisibility}
+        />
+      </>
+    );
   };
 
   return (
@@ -67,9 +126,12 @@ const Login = () => {
               error={error}
               placeholder="Enter your password"
               name="password"
-              type="password"
+              type={inputType}
               // required={true}
-            />
+            >
+              {renderPasswordToggle()}
+            </Input>
+
             <div className="w-full flex justify-end mb-4">
               <p className="float-right">
                 Don't have an account yet?
@@ -81,16 +143,26 @@ const Login = () => {
               </p>
             </div>
             <Button
+              key="login-btn"
               className="w-full"
               variant="primary"
               onClick={handleSubmit}
               isLoading={isLoading}
+              // disabled={!credentials.email || !credentials.password}
             >
               Login
             </Button>
           </form>
         </div>
       </div>
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };

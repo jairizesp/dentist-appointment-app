@@ -23,7 +23,6 @@ export async function addAppointment(payload: Omit<Appointment, "id">) {
     "/appointment/add-appointment",
     payload
   );
-  console.log(response);
 
   const result = response.data;
 
@@ -41,4 +40,31 @@ export async function getAppointmentsByPatient(): Promise<
   const result = response.data;
 
   return result;
+}
+
+export async function getPreviousAppointmentsByPatient(): Promise<
+  AppointmentWithDentist[]
+> {
+  const userIdentity = getIdentity();
+  const response = await apiClient.get(
+    `/appointment/by-patient/history/${userIdentity?.id}`
+  );
+
+  const result = response.data;
+
+  return result;
+}
+
+export async function cancelAppointment(id: number) {
+  try {
+    const response = await apiClient.put(
+      `/appointment/cancel-appointment/${id}`
+    );
+
+    const result = response.data;
+
+    return result;
+  } catch (error: any) {
+    throw error?.response?.data;
+  }
 }

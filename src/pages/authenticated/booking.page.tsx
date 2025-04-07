@@ -9,7 +9,7 @@ import {
 import { Appointment } from "../../utils/interface/api/appointment.interface";
 import Button from "../../components/button.component";
 import { getIdentity } from "../../utils/helpers/tokenHelper";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const APPOINTMENTS = [
   { from_value: 8, from_label: "8 AM", to_value: 9, to_label: "9 AM" },
@@ -24,10 +24,16 @@ const APPOINTMENTS = [
 ];
 const Booking = () => {
   const navigate = useNavigate();
+  const { id, date } = useParams();
   const [dentists, setDentists] = useState<DentistInformation[]>([]);
-  const [selectedDentist, setSelectedDentist] = useState<number>(0);
+  const [selectedDentist, setSelectedDentist] = useState<number>(
+    Number(id) ?? 0
+  );
+
+  const [isReschedule, setIsReschedule] = useState(false);
+
   const [appointmentDate, setAppointmentDate] = useState(
-    new Date().toLocaleDateString()
+    date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()
   );
   const [selectedAppointment, setSelectedAppointment] = useState<{
     from: number;
@@ -37,6 +43,11 @@ const Booking = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (id && date) {
+      setIsReschedule(true);
+    } else {
+      setIsReschedule(false);
+    }
     const load = async () => {
       setIsLoading(true);
       const data = await getDentists();
@@ -107,12 +118,13 @@ const Booking = () => {
   return (
     <div className="flex flex-col gap-8 py-8">
       <h1 className="text-3xl font-bold text-purple-800">
-        Book an Appointment
+        {id && date ? "Reschedule Appointment" : "Book an Appointment"}
       </h1>
-      <div className="w-full flex gap-8">
-        <div className="flex  flex-col flex-1 justify-start">
+      <div className="w-full flex flex-col  lg:flex-row gap-8">
+        <div className="flex  flex-col flex-1 justify-center lg:justify-start">
           <select
-            disabled={isLoading}
+            value={selectedDentist}
+            disabled={isLoading || isReschedule}
             onChange={handleSelectDentist}
             className="px-4 py-2 border border-purple-800 rounded-md font-semibold disabled:border-gray-200 disabled:text-gray-400"
           >
@@ -129,6 +141,7 @@ const Booking = () => {
               ))}
           </select>
           <Calendar
+            default_date={date}
             selectedDate={setAppointmentDate}
             dentistId={selectedDentist}
           />
@@ -146,7 +159,7 @@ const Booking = () => {
                   disabled={
                     !selectedDentist || isScheduled(appointment.from_value)
                   }
-                  className={`${
+                  className={`w-full md:w-auto ${
                     selectedAppointment?.from == appointment.from_value
                       ? "bg-purple-800 text-purple-200"
                       : ""
@@ -163,7 +176,7 @@ const Booking = () => {
               ))}
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex mt-8 md:mt-0 justify-end">
             <Button
               key="confirm-appointment-button"
               disabled={!selectedAppointment.from}

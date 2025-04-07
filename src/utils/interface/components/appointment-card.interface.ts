@@ -3,6 +3,8 @@ import { DentistInformation } from "../api/dentist.interface";
 
 export interface AppointmentCardProps {
   isUpcoming?: boolean;
+  onCancelSuccess?: () => void;
+  className?: string;
   info: AppointmentInformation;
 }
 
