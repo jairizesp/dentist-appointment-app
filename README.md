@@ -104,7 +104,7 @@ Start the Development Server:
 ```js
   npm run dev
 ```
-The application will be running at http://localhost:3000 by default.
+The application will be running at http://localhost:5173 by default.
 
 Deployment
 The presence of the vercel.json file suggests that the project is configured for deployment on Vercel. To deploy:​
