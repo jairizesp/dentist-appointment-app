@@ -2,7 +2,6 @@ import Button from "./button.component";
 import { AppointmentCardProps } from "../utils/interface/components/appointment-card.interface";
 import { appointmentDuration } from "../utils/helpers/range";
 import { FaUserDoctor } from "react-icons/fa6";
-import Modal from "./modal.component";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cancelAppointment } from "../services/appointment.service";

@@ -12,7 +12,7 @@ const NAV_PAGES = [
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [identity, setIdentity] = useState(getIdentity());
+  const [identity, _] = useState(getIdentity());
   const [isShowLogout, setIsShowLogout] = useState(false);
 
   const logoutRef = useRef<HTMLDivElement>(null); // <== ref here

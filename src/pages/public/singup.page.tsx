@@ -21,7 +21,7 @@ const Signup = () => {
     }
   }, []);
 
-  const [error, setError] = useState("");
+  const [error, _] = useState("");
 
   const handleCredentialChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -87,7 +87,12 @@ const Signup = () => {
                 </span>
               </p>
             </div>
-            <Button className="w-full" variant="primary" onClick={handleSubmit}>
+            <Button
+              key="sign-up-btn-key"
+              className="w-full"
+              variant="primary"
+              onClick={handleSubmit}
+            >
               Signup
             </Button>
           </form>

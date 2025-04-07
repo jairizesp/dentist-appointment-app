@@ -8,13 +8,7 @@ interface ModalProps {
   children: ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-  title,
-  dentist_id,
-  children,
-}) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   // Close modal on ESC key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {

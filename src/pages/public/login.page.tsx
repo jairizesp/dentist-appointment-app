@@ -36,7 +36,7 @@ const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [inputType, setInputType] = useState("password");
 
-  const [error, setError] = useState("");
+  const [error, _] = useState("");
 
   const handleCredentialChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));

@@ -1,4 +1,4 @@
-import { Identity, UserIdentity } from "../interface/api/identity.interface";
+import { UserIdentity } from "../interface/api/identity.interface";
 
 export function getAccessToken(): string | undefined {
   const token = localStorage.getItem("accessToken");

@@ -3,7 +3,6 @@ import {
   Appointment,
   AppointmentParams,
 } from "../utils/interface/api/appointment.interface";
-import { DentistInformation } from "../utils/interface/api/dentist.interface";
 import { AppointmentWithDentist } from "../utils/interface/components/appointment-card.interface";
 import apiClient from "./axios";
 

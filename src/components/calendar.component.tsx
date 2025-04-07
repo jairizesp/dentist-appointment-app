@@ -1,12 +1,5 @@
-import React, { JSX, useState } from "react";
+import { JSX, useState } from "react";
 import { ToastType, Toast } from "./toast.component";
-
-// Appointment interface
-interface Appointment {
-  title: string;
-  description: string;
-  date: string;
-}
 
 // Utility functions to get month and year
 const getDaysInMonth = (month: number, year: number) => {
@@ -33,7 +26,6 @@ const Calendar = (props: CalendarProps) => {
       : today.getMonth()
   );
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [toast, setToast] = useState<{
     message: string;
     type: ToastType;
