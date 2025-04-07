@@ -78,16 +78,17 @@ const Signup = () => {
         email: credentials.email,
         password: credentials.password,
       };
-      const response = await userSignup(payload);
+      const result = await userSignup(payload);
+      console.log(result);
 
-      if (response.status == 200) {
+      if (result?.response?.status_code == 200) {
         showToast("success", "Registration Successful");
 
         setTimeout(() => {
           navigate("/");
         }, 900);
       } else {
-        showToast("error", response.message);
+        showToast("error", result.message);
       }
     } catch (error: any) {
       const toastMessage = error.message;
