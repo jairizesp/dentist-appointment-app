@@ -4,6 +4,9 @@ import Input from "../../components/input.component";
 import signupBanner from "../../assets/signup.svg";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../../utils/helpers/tokenHelper";
+import { userSignup } from "../../services/auth.service";
+import { UserInformation } from "../../utils/interface/api/auth.interface";
+import { Toast, ToastType } from "../../components/toast.component";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -13,6 +16,17 @@ const Signup = () => {
     firstName: "",
     lastName: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [toast, setToast] = useState<{
+    message: string;
+    type: ToastType;
+  } | null>(null);
+
+  const showToast = (type: ToastType, message: string) => {
+    setToast({ message, type });
+  };
 
   useEffect(() => {
     const accessToken = getAccessToken();
@@ -27,8 +41,29 @@ const Signup = () => {
     setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = () => {
-    alert(`EMAIL: ${credentials.email}, PASSWORD: ${credentials.password}`);
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true);
+
+      const payload: Omit<UserInformation, "id"> = {
+        first_name: credentials.firstName,
+        last_name: credentials.lastName,
+        email: credentials.email,
+        password: credentials.password,
+      };
+      const response = await userSignup(payload);
+
+      if (response) {
+        showToast("success", "Registration Successful");
+        setIsLoading(false);
+        setTimeout(() => {
+          navigate("/");
+        }, 900);
+      }
+    } catch (error: any) {
+      const toastMessage = error.message;
+      showToast("error", toastMessage);
+    }
   };
 
   return (
@@ -40,8 +75,9 @@ const Signup = () => {
               <h1 className="text-4xl font-semibold text-purple-800">Signup</h1>
             </div>
             <Input
+              key="signup-first-name"
               label="First Name"
-              value={credentials.email}
+              value={credentials.firstName}
               onChange={handleCredentialChange}
               error={error}
               placeholder="Enter your first name"
@@ -50,8 +86,9 @@ const Signup = () => {
               required={true}
             />
             <Input
+              key="signup-last-name"
               label="Last Name"
-              value={credentials.password}
+              value={credentials.lastName}
               onChange={handleCredentialChange}
               error={error}
               placeholder="Enter your last name"
@@ -60,6 +97,7 @@ const Signup = () => {
             />
 
             <Input
+              key="signup-email"
               label="Email"
               value={credentials.email}
               onChange={handleCredentialChange}
@@ -70,6 +108,7 @@ const Signup = () => {
               required={true}
             />
             <Input
+              key="signup-password"
               label="Password"
               value={credentials.password}
               onChange={handleCredentialChange}
@@ -92,6 +131,7 @@ const Signup = () => {
               className="w-full"
               variant="primary"
               onClick={handleSubmit}
+              isLoading={isLoading}
             >
               Signup
             </Button>
@@ -101,6 +141,14 @@ const Signup = () => {
       <div className="lg:h-full flex justify-center items-center mt-16">
         <img src={signupBanner} alt="" />
       </div>
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };

@@ -50,7 +50,7 @@ const Login = () => {
         showToast("success", "Login successful.");
         setTimeout(() => {
           navigate("/");
-        }, 1500);
+        }, 900);
       }
     } catch (error: any) {
       const toastMessage = error.message;
