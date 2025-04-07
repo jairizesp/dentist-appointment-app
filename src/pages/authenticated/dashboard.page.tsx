@@ -27,7 +27,7 @@ const Dashboard = () => {
     }
 
     if (result2) {
-      setPreviousAppointments(result);
+      setPreviousAppointments(result2);
     }
 
     setIsLoading(false);
@@ -69,7 +69,7 @@ const Dashboard = () => {
       return <Spinner />;
     }
 
-    if (!appointments.length && !isLoading) {
+    if (!previousAppointments.length && !isLoading) {
       return <p>No past appointmens found.</p>;
     }
 
