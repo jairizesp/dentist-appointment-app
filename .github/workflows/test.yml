@@ -1,0 +1,16 @@
+name: Test Only
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
