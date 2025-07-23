@@ -1,0 +1,42 @@
+name: Workflow Dispatch Tests
+run-name: "Fabletics Test Suite - Run ID: ${{ github.event.inputs.unique }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment'
+        required: true
+        type: choice
+        options:
+          - production
+          - preview
+      domain:
+        description: 'Select domain'
+        required: true
+        type: choice
+        options:
+          - all
+          - us
+          - ca
+          # - uk
+          # - de
+          # - fr
+          # - es
+          # - nl
+          # - sw
+          # - dk
+      COHORT:
+        description: 'Select cohort'
+        required: true
+        type: choice
+        options:
+          - All
+          - Release Candidate
+          - Customer Facing
+          - Blue
+          - Green
+      unique:
+        description: 'a unique id to allow remote tracking'
+        required: false
+        default: '(none)'
